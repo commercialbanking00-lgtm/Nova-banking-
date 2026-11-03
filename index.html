@@ -442,5 +442,29 @@ function logout() {
 // Start on login
 showPage('loginPage');
 </script>
+ <script>
+document.getElementById('loginForm').addEventListener('submit', async function(event) {
+  event.preventDefault();
+
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  const error = document.getElementById('loginError');
+
+  error.textContent = 'Signing in...';
+
+  const { data, error: loginError } = await supabaseClient.auth.signInWithPassword({
+    email: email,
+    password: password
+  });
+
+  if (loginError) {
+    error.textContent = loginError.message;
+    return;
+  }
+
+  error.textContent = 'Sign in successful!';
+  showPage('dashboardPage');
+});
+</script>
 </body>
 </html>
